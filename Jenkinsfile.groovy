@@ -24,6 +24,11 @@ def buildFailure = false
 def testFailure = false
 def deployFailure = false
 
+//server variables
+def hybrisServerA = hybrisServer123
+def hybrisServerB = hybrisServer456
+def slave = "buildServer123 || buildServer456"
+
 node (slave) {
     try {
     stage('Prepare Environment'){
@@ -51,6 +56,13 @@ node (slave) {
         //deploy to 2 servers
             try {
                 echo "Deploy Environment"
+                parallel (
+					"Deploy Server A" :{
+                        echo "Deploying to Server A"
+                    },
+                    "Deploy Server B" :{
+                        echo "Deploying to Server B"
+                    }
             }catch{
                 deployFailure = true;
                 throw err
