@@ -1,5 +1,5 @@
 
-//set variables
+//set variables test CE change here
 
 //project variables
 def projectName = "hybrisHomework"
