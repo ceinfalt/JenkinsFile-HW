@@ -1,20 +1,20 @@
 
+//set variables
 def projectName = "hybrisHomework"
 
 node (slave) {
-    stage{'Prepare Environment'
-
+    stage('Prepare Environment'){
+        //clone
     }
-
-     stage{'Build'
-
+    stage('Build'){
+        echo "Building..."
+        //build
     }
-
-     stage{'Test'
-        echo "Not testing yet"
+    stage('Test'){
+        echo "Not Testing Yet!"
     }
-
-     stage{'Deploy'
-
+    stage('Deploy'){
+        echo "Deploying..."
+        //deploy to 2 servers
     }
 }
