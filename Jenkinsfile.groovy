@@ -1,5 +1,6 @@
 
-//set variables test CE change here
+//shared libraries
+includes @HybrisAcceleratorLibrary //pretend we have these in the repo
 
 //project variables
 def projectName = "hybrisHomework"
@@ -29,12 +30,25 @@ def hybrisServerA = hybrisServer123
 def hybrisServerB = hybrisServer456
 def slave = "buildServer123 || buildServer456"
 
+//local function definitions
+def antDeploy(String serviceName) {
+    sh """cd "${env.WORKSPACE}/${serviceName}" 
+        echo 'Starting Deploy'
+        ant deployAll
+        """
+}
+
 node (slave) {
     try {
-    stage('Prepare Environment'){
-        //clone
+    stage('Prepare Environments'){
             try {
-                echo "Prepare Environment"
+                echo "Cleaning up build server $slave"
+                //clean out build server
+                echo "Build server $slave clean!"
+                //get latest version of hybris
+                echo "Getting Hybris..."
+                getHybris(call) {} //what is call?  do we pass all variables?
+                echo "Got hybris!"
             }catch{
                 prepareFailure = true;
                 throw err
@@ -43,7 +57,7 @@ node (slave) {
         echo "Building..."
         //build to 2 servers
             try {
-                echo "Build"
+                echo "Building on $slave"
             }catch{
                 buildFailure = true;
                 throw err
@@ -57,11 +71,11 @@ node (slave) {
             try {
                 echo "Deploy Environment"
                 parallel (
-					"Deploy Server A" :{
-                        echo "Deploying to Server A"
+					"Deploying to $hybrisServerA" :{
+                        echo "Deploying to $hybrisServerA"
                     },
-                    "Deploy Server B" :{
-                        echo "Deploying to Server B"
+                    "Deploying to $hybrisServerB Server B" :{
+                        echo "Deploying to $hybrisServerA"
                     }
             }catch{
                 deployFailure = true;
